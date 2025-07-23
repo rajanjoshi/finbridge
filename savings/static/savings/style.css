@@ -1,0 +1,36 @@
+
+.goal-card {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+.progress-bar {
+  background: #eee;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+}
+
+
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+  .goal-card {
+    padding: 0.5em;
+  }
+  input, button, select, textarea {
+    width: 100% !important;
+    font-size: 16px;
+  }
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+}

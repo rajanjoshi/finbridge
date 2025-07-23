@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">📜 Your Quiz History</h2>
+  {% if sessions %}
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Date</th>
+          <th>Score (%)</th>
+          <th>Total Questions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for session in sessions %}
+          <tr>
+            <td>{{ session.taken_on|date:"Y-m-d H:i" }}</td>
+            <td>{{ session.score }}</td>
+            <td>{{ session.total_questions }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No quiz history found.</p>
+  {% endif %}
+</div>
+{% endblock %}

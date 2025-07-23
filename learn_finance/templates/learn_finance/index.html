@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<h2>📘 Learn Personal Finance</h2>
+<p>Start your journey toward financial literacy:</p>
+{% for topic in topics %}
+<div class="response">
+  <h3>📖 {{ topic.title }}</h3>
+  <p>{{ topic.content }}</p>
+</div>
+{% endfor %}
+{% else %}
+<div class="login-cta">
+  🔐 Please <a href="/login/">login</a> to access financial learning materials.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load savings_extras %}
+{% load i18n %}
+{% block content %}
+
+<link rel="stylesheet" href="/static/savings/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/savings/savings.js"></script>
+
+<h2>💰 {% trans "Advanced Savings Tracker" %}</h2>
+
+<form method="post">{% csrf_token %}
+  <h3>{% trans "Create New Goal" %}</h3>
+  {{ form.as_p }}
+  <button type="submit">{% trans "Add Goal" %}</button>
+</form>
+
+<hr/>
+
+<h3>{% trans "My Goals" %}</h3>
+<a href="{% url 'savings:export' %}" class="button" style="float:right; margin-bottom: 1em;">
+  📤 {% trans "Export CSV" %}
+</a>
+
+{% for goal in goals %}
+  <div style="border:1px solid #ccc; padding:1em; margin-bottom:1em;">
+    <strong>{{ goal.title }}</strong>
+    {% if goal.completed %}
+      <span style="color:green;">({% trans "Completed" %})</span>
+    {% endif %}<br/>
+
+    <em>{{ goal.description }}</em><br/>
+    {% trans "Target" %}: ₹{{ goal.target_amount }} |
+    {% trans "Saved" %}: ₹{{ goal.saved_amount }} ({{ goal.progress_percent }}%)<br/>
+    {% trans "Deadline" %}: {{ goal.deadline }}
+    {% if goal.is_close_to_deadline %}
+      <span style="color:red;">⏰ {% trans "Hurry!" %}</span>
+    {% endif %}
+
+    <div style="background:#eee; height:20px; border-radius:10px; overflow:hidden;">
+      <div style="height:100%; background:#4caf50; width:{{ goal.progress_percent }}%;"></div>
+    </div>
+
+    <form method="post" action="{% url 'savings:contribute' goal.id %}" style="margin-top:1em;">
+      {% csrf_token %}
+      {{ contribution_form.as_p }}
+      <button type="submit">{% trans "Add Contribution" %}</button>
+    </form>
+
+    {% if not goal.completed %}
+    <form method="post" action="{% url 'savings:complete' goal.id %}">
+      {% csrf_token %}
+      <button type="submit" style="margin-top:0.5em;">✅ {% trans "Mark as Completed" %}</button>
+    </form>
+    {% endif %}
+
+    <h4>{% trans "Contribution History" %}</h4>
+    <ul>
+      {% for c in goal.contributions.all %}
+        <li>{{ c.date }}: ₹{{ c.amount }} {% if c.note %}- {{ c.note }}{% endif %}</li>
+      {% empty %}
+        <li>{% trans "No contributions yet." %}</li>
+      {% endfor %}
+    </ul>
+
+    <canvas data-chart='{{ goal.contributions.all|json_chart }}' width="400" height="100"></canvas>
+  </div>
+{% empty %}
+  <p>{% trans "No savings goals yet. Add one above!" %}</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">🏁 {% trans "Quiz Results" %}</h2>
+
+  <p class="text-center">{% trans "You answered" %} {{ correct }}/{{ total }} {% trans "questions correctly." %}</p>
+  <p class="text-center">{% trans "You scored" %} {{ score }}%</p>
+
+  {% if badge %}
+    <h3 class="text-center mt-4">{% trans "🏅 You earned a badge:" %} {{ badge }}</h3>
+  {% else %}
+    <div class="text-center alert alert-warning mt-3">{% trans "❗ Let’s study more and try again!" %}</div>
+  {% endif %}
+
+  <hr />
+  <h4>{% trans "Review your answers:" %}</h4>
+  <ul>
+    {% for q in feedback %}
+      <li class="{% if q.is_correct %}text-success{% else %}text-danger{% endif %}">
+        Question : {{ q.question }}<br>
+        <strong>Your Answer:</strong> {{ q.your_answer }}<br>
+        <strong>Correct Answer:</strong> {{ q.correct_answer }}<br>
+        <strong>Explanation:</strong> {{ q.explanation }}<br>
+        <strong>-------------------------------------------------------------------------------------------------------</strong>
+      </li>
+    {% endfor %}
+  </ul>  
+</div>
+{% endblock %}

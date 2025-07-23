@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>🏅 Gamification Dashboard</h2>
+  <ul>
+    <li><a href="{% url 'financial_quiz_view' %}">🧠 Take a Quiz</a></li>
+    <li><a href="{% url 'quiz_history' %}">📊 View Quiz History</a></li>
+  </ul>
+</div>
+{% endblock %}

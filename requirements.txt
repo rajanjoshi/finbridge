@@ -1,0 +1,10 @@
+Django>=4.2
+gunicorn
+whitenoise
+google-cloud-aiplatform==1.103.0
+google-genai==1.25.0
+django-modeltranslation>=0.18.11
+google-cloud-translate>=3.14.1
+google-cloud-speech
+google-cloud-texttospeech
+markdown

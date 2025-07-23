@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-17 18:54+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: savings/templates/savings/index.html:10
+msgid "Advanced Savings Tracker"
+msgstr ""
+
+#: savings/templates/savings/index.html:13
+msgid "Create New Goal"
+msgstr ""
+
+#: savings/templates/savings/index.html:15
+msgid "Add Goal"
+msgstr ""
+
+#: savings/templates/savings/index.html:20
+msgid "My Goals"
+msgstr ""
+
+#: savings/templates/savings/index.html:22
+msgid "Export CSV"
+msgstr ""
+
+#: savings/templates/savings/index.html:29
+msgid "Completed"
+msgstr ""
+
+#: savings/templates/savings/index.html:33
+msgid "Target"
+msgstr ""
+
+#: savings/templates/savings/index.html:34
+msgid "Saved"
+msgstr ""
+
+#: savings/templates/savings/index.html:35
+msgid "Deadline"
+msgstr ""
+
+#: savings/templates/savings/index.html:37
+msgid "Hurry!"
+msgstr ""
+
+#: savings/templates/savings/index.html:47
+msgid "Add Contribution"
+msgstr ""
+
+#: savings/templates/savings/index.html:53
+msgid "Mark as Completed"
+msgstr ""
+
+#: savings/templates/savings/index.html:57
+msgid "Contribution History"
+msgstr ""
+
+#: savings/templates/savings/index.html:62
+msgid "No contributions yet."
+msgstr ""
+
+#: savings/templates/savings/index.html:69
+msgid "No savings goals yet. Add one above!"
+msgstr ""

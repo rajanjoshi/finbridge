@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<h2>📜 Scheme Eligibility Checker</h2>
+<form method="post">{% csrf_token %}
+  <label for="age">Your Age:</label>
+  <input name="age" type="number" min="0" placeholder="Enter your age" required />
+
+  <label for="income">Annual Income (INR):</label>
+  <input name="income" type="number" min="0" placeholder="e.g. 120000" required />
+
+  <button type="submit">Check Eligibility</button>
+</form>
+{% if error %}<p class="error">⚠ {{ error }}</p>{% endif %}
+{% if eligible %}
+<h3>🎯 Eligible Schemes:</h3>
+<ul>{% for name in eligible %}<li>✅ {{ name }}</li>{% endfor %}</ul>
+{% endif %}
+{% else %}
+<div class="login-cta">
+  🔐 Please <a href="/login/">login</a> to check scheme eligibility.
+</div>
+{% endif %}
+{% endblock %}

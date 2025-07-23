@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📄 Upload Documents for AI Assistant</h2>
+
+{% if status_msg %}
+  <p style="color: green;"><strong>{{ status_msg }}</strong></p>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" name="upload_file">📤 Upload to GCS</button>
+</form>
+
+<form method="post">{% csrf_token %}
+  <button type="submit" name="sync_rag">🔁 Sync to Vertex RAG</button>
+</form>
+
+<h3>🗂️ Previous Uploads</h3>
+<ul>
+  {% for doc in uploads %}
+    <li>{{ doc.file.name }} - {{ doc.status }} - {{ doc.uploaded_at }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
