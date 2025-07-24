@@ -1,62 +1,92 @@
 {% extends "base.html" %}
-{% load static %}
-{% block content %}
 {% load i18n %}
 
+{% block content %}
 <div class="container mt-5">
-  <h2 class="text-center mb-4">{% trans "Financial Inclusion Quiz" %}</h2>
+  <h2 class="text-center mb-4">🧠 {% trans "Financial Inclusion Quiz" %}</h2>
 
-  {% if quiz_questions %}
-    <form method="post" action="{% url 'submit_quiz' %}" id="quiz-form">
+  {% if submitted %}
+    <div class="text-center mb-4">
+      <h4>{% trans "Your Score" %}: {{ score }}/{{ total }} ({{ percentage }}%)</h4>
+      {% if badge %}
+        <div class="alert alert-success">
+          🏅 {% trans "You earned a" %} <strong>{{ badge }}</strong> {% trans "badge!" %}
+        </div>
+      {% else %}
+        <div class="alert alert-warning">
+          ❗ {% trans "Keep learning and try again for a badge!" %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% for f in feedback %}
+      <div class="card mb-3">
+        <div class="card-header 'bg-success text-white'">
+          <strong>Q{{ forloop.counter }}:</strong> {{ f.question }}
+        </div>
+        <div class="card-body">
+          <p><strong>{% trans "Your Answer" %}:</strong> {{ f.your_answer }}</p>
+          <p><strong>{% trans "Correct?" %}:</strong> {{ f.correct|yesno:_("Yes,No") }}</p>
+          <p><strong>{% trans "Explanation" %}:</strong> {{ f.explanation }}</p>
+        </div>
+      </div>
+    {% endfor %}
+
+    <div class="text-center mt-4">
+      <a href="{% url 'financial_quiz' %}" class="btn btn-primary">
+        🔁 {% trans "Try Again" %}
+      </a>
+    </div>
+  {% else %}
+    <form method="post" id="quiz-form">
       {% csrf_token %}
       {% for q in quiz_questions %}
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Q{{ forloop.counter }}: {{ q.question }}</h5>
-            {% for opt in q.options %}
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="answer_{{ forloop.parentloop.counter0 }}"
-                       id="q{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" value="{{ opt }}">
-                <label class="form-check-label" for="q{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
-                  {{ opt }}
-                </label>
-              </div>
-            {% endfor %}
-            <input type="hidden" name="correct_{{ forloop.counter0 }}" value="{{ q.answer }}">
-          </div>
+        <div class="mb-4 p-3 border rounded shadow-sm">
+          <p><strong>Q{{ forloop.counter }}:</strong> {{ q.question }}</p>
+          {% for opt in q.options %}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="answer_{{ forloop.parentloop.counter0 }}"
+                     id="opt_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}"
+                     value="{{ opt }}">
+              <label class="form-check-label" for="opt_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}">
+                {{ opt }}
+              </label>
+            </div>
+          {% endfor %}
         </div>
       {% endfor %}
-      <button type="submit" class="btn btn-primary btn-lg w-100">✅ {% trans "Submit Answers" %}</button>
+
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-success btn-lg">✅ {% trans "Submit Answers" %}</button>
+      </div>
     </form>
-  {% else %}
-    <div class="alert alert-warning text-center">
-      ⚠️ No quiz questions available. Please try again later.
-    </div>
+
+    <script>
+      document.getElementById("quiz-form").addEventListener("submit", function(e) {
+        const totalQuestions = {{ quiz_questions|length }};
+        let allAnswered = true;
+
+        for (let i = 0; i < totalQuestions; i++) {
+          const options = document.getElementsByName("answer_" + i);
+          let answered = false;
+          for (const opt of options) {
+            if (opt.checked) {
+              answered = true;
+              break;
+            }
+          }
+          if (!answered) {
+            allAnswered = false;
+            break;
+          }
+        }
+
+        if (!allAnswered) {
+          e.preventDefault();
+          alert("{% trans 'Please answer all questions before submitting.' %}");
+        }
+      });
+    </script>
   {% endif %}
 </div>
 {% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  document.querySelector("form").addEventListener("submit", function (e) {
-    const totalQuestions = {{ quiz_questions|length }};
-    let allAnswered = true;
-
-    for (let i = 0; i < totalQuestions; i++) {
-      const options = document.getElementsByName(`q${i}`);
-      const answered = Array.from(options).some(opt => opt.checked);
-      if (!answered) {
-        allAnswered = false;
-        break;
-      }
-    }
-
-    if (!allAnswered) {
-      e.preventDefault(); // stop form submission
-      Swal.fire({
-        icon: 'warning',
-        title: 'Hold on!',
-        text: 'Please answer all questions before submitting the quiz.',
-      });
-    }
-  });
-</script>
